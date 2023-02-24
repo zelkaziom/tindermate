@@ -39,20 +39,6 @@ Make sure to **star the project** if you find it useful! :star:
 See the [Installation](#installation) section for more information on how to install the project and its dependencies,
 and the [Prerequisites](#prerequisites) section for more information on how to get your Tinder auth token and your OpenAI API key.
 
-## Installation
-
-1. Make sure you have Python 3.10 or higher installed and available on your `PATH` environment variable
-   (You can check your version using `$ python --version`)
-2. Clone the repository using `$ git clone https://github.com/borisrakovan/tindermate.git`
-3. cd into the directory of the project (e.g. `$ cd tindermate`)
-4. *Optional:* Create a virtual environment for the project using `$ python -m venv venv`
-and activate it using `$ venv/bin/activate` on Linux/macOS or `$ venv\Scripts\activate` on Windows
-5. Install the project's dependencies using `$ python -m pip install .`
-6. Run the application in your terminal using `$ python -m main` 
-
-Note: The project is developed using poetry, so you can skip the steps 4 and 5 and use `poetry install` if you have
-poetry installed on your system.
-
 ## Prerequisites
 
 ### Tinder auth token
@@ -94,6 +80,24 @@ Once you have both your Tinder auth token and your OpenAI API key, you can start
 run, the application will prompt you to enter your both tokens. You can also enter these
 credentials manually by creating an empty `.env` file in the application root directory and manually adding the keys
 there. See the `.env.example` file for an example of how the `.env` file should look like.
+
+## Installation
+
+1. Make sure you have Python 3.10 or higher installed and available on your `PATH` environment variable
+   (You can check your version using `$ python --version`)
+2. Clone the repository using `$ git clone https://github.com/borisrakovan/tindermate.git`
+3. cd into the directory of the project (e.g. `$ cd tindermate`)
+4. *Optional:* Create a virtual environment for the project using `$ python -m venv venv`
+and activate it using `$ venv/bin/activate` on Linux/macOS or `$ venv\Scripts\activate` on Windows
+5. Install the project's dependencies using `$ python -m pip install .`
+6. Run the application in your terminal using `$ python -m main` 
+
+Note: The project is developed using poetry, so you can skip the steps 4 and 5 and use `poetry install` if you have
+poetry installed on your system.
+
+## Configuration
+
+*TBD*
 
 ## Contributing
 

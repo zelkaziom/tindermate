@@ -4,7 +4,6 @@ import functools
 import hashlib
 import inspect
 import pickle
-import time
 from collections.abc import Callable
 from typing import Generic, ParamSpec, TypeVar
 
@@ -98,8 +97,3 @@ def arg_key_file_cache(resource_name: str, is_method: bool = False) -> FileCache
         return wrapper
 
     return decorator
-
-
-def time_sleep(secs: float) -> None:
-    print(f"sleep({secs})")
-    time.sleep(secs)
