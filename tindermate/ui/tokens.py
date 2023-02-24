@@ -1,4 +1,5 @@
 import asyncio
+import tokenize
 from dataclasses import dataclass
 
 from tindermate.configuration import Configuration
@@ -36,9 +37,13 @@ class Tokens:
 
 
 async def validate_tokens(tokens: Tokens) -> None:
-    await asyncio.sleep(5)
-    tinder = create_tinder_client(auth_token=tokens.tinder_token or "")
-    agent = ConversationAgent(api_key=tokens.openai_token or "")
+    if tokens.tinder_token is None:
+        raise InvalidTokenError("Tinder token is not valid")
+    if tokens.openai_token is None:
+        raise InvalidTokenError("Open AI token is not valid")
+
+    tinder = create_tinder_client(auth_token=tokens.tinder_token)
+    agent = ConversationAgent(api_key=tokens.openai_token)
 
     try:
         await asyncio.gather(tinder.current_user_info(), agent.test_connection())
