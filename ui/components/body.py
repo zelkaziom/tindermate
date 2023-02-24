@@ -1,6 +1,6 @@
+from collections.abc import Callable, Coroutine
 from contextlib import contextmanager
 from operator import attrgetter
-from typing import Coroutine, Type, Callable
 
 from textual.app import ComposeResult
 from textual.containers import Container
@@ -8,10 +8,10 @@ from textual.reactive import Reactive, reactive
 from textual.widgets import Static
 
 from tinder.schemas import CurrentUser
-from ui.components.generic import Column, Tab, SubTitle, Row
+from ui.components.generic import Column, Row, SubTitle, Tab
 from ui.components.sidebar import Title
+from ui.components.tinder_match import MessagedTinderMatch, NewTinderMatch, TinderMatch
 from ui.context import AppContext
-from ui.components.tinder_match import NewTinderMatch, MessagedTinderMatch, TinderMatch
 from ui.utils import render_link, render_markdown_info_list
 
 
@@ -110,11 +110,11 @@ class Body(Static):
             sort_key=lambda m: m.messages[-1].sent_date
         )
 
-    async def fetch_tab_content(self, fetch_coro: Coroutine, widget_cls: Type[TinderMatch], sort_key: Callable) -> None:
+    async def fetch_tab_content(self, fetch_coro: Coroutine, widget_cls: type[TinderMatch], sort_key: Callable) -> None:
         with self.loading_data():
-            matches = [match for match in await fetch_coro]
+            matches = list(await fetch_coro)
             current_user = await self.get_current_user()
-            sorted_matches = list(reversed(sorted(matches, key=sort_key)))
+            sorted_matches = sorted(matches, key=sort_key, reverse=True)
             sliced_matches = sorted_matches[:self._TAB_CONTENT_MAX_ITEMS]
             widgets = []
             for idx, match in enumerate(sliced_matches):

@@ -1,9 +1,9 @@
-from configuration import Configuration
-
 import logging
 import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+
+from configuration import Configuration
 
 
 def _init_logger(log_dir: Path) -> logging.Logger:

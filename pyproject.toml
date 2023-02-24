@@ -13,6 +13,7 @@ ignore = [
     "D213", # Multi-line docstring summary should start at the second line
     "PLR2004", # Magic value used in comparison, consider replacing {...} with a constant variable
     "T201", # todo: temporarily enable print statements
+    "PLR0913", # "Too many arguments to function call ({num_args} > {max_args})",
 ]
 select = ["C90", "D1", "D2", "D3", "E", "F", "T2", "W", "C4", "T10", "TID", "PL", "N", "UP", "SIM", "I001"]
 

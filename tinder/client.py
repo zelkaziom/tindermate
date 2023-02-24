@@ -2,14 +2,14 @@ import asyncio
 import random
 from http import HTTPStatus
 from operator import attrgetter
-from typing import Any, AsyncIterator
+from typing import Any
 
 import aiohttp
 from aiohttp import ClientResponseError
 
 from configuration import Configuration
 from tinder.exception import TinderAuthError
-from tinder.schemas import LikedUserResult, Match, Message, CurrentUser, UserDetail, MatchDetail
+from tinder.schemas import CurrentUser, LikedUserResult, Match, MatchDetail, Message, UserDetail
 from utils import arg_key_file_cache
 
 
@@ -80,22 +80,6 @@ class TinderClient:
         user_detail = await self._user_detail(match.person.id)
         return MatchDetail.parse_obj(match.dict() | {"person": user_detail.dict()})
 
-    async def matches_with_detail(self, messaged: bool) -> AsyncIterator[MatchDetail]:
-        """Fetch matched persons with their profile details"""
-        for match in await self.matches(messaged):
-            await self._sleep()
-            yield await self.fetch_detail_for(match)
-
-    async def new_matches(self) -> AsyncIterator[MatchDetail]:
-        """Fetch full information about new matches that have not yet been texted"""
-        async for match in self.matches_with_detail(messaged=False):
-            yield match
-
-    async def messaged_matches(self) -> AsyncIterator[MatchDetail]:
-        """Fetch the contacted matches"""
-        async for match in self.matches_with_detail(messaged=True):
-            yield match
-
     async def fetch_messages_for(self, match: Match) -> None:
         """Update the match with all the exchanged messages"""
         match.messages = await self._messages(match.id)
@@ -114,23 +98,13 @@ _tinder_cache = arg_key_file_cache("tinder", is_method=True)
 
 class CachingTinderClient(TinderClient):
     """Tinder client that caches the response payloads in order to avoid unnecessary requests while debugging"""
+
     def __init__(self, auth_token: str):
         super().__init__(auth_token, sleep_between_requests=2)
 
     @_tinder_cache
-    async def matches_with_detail(self, messaged: bool) -> AsyncIterator[MatchDetail]:
-        async for match in super().matches_with_detail(messaged):
-            yield match
-
-    @_tinder_cache
-    async def new_matches(self) -> AsyncIterator[MatchDetail]:
-        async for match in super().new_matches():
-            yield match
-
-    @_tinder_cache
-    async def messaged_matches(self) -> AsyncIterator[MatchDetail]:
-        async for match in super().messaged_matches():
-            yield match
+    async def matches(self, messaged: bool) -> list[Match]:
+        return await super().matches(messaged)
 
     @_tinder_cache
     async def current_user_info(self) -> CurrentUser:

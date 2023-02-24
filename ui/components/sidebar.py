@@ -2,10 +2,9 @@ from rich.console import RenderableType
 from textual.app import ComposeResult
 from textual.containers import Container, Horizontal
 from textual.reactive import watch
-from textual.widgets import Static, Checkbox
+from textual.widgets import Checkbox, Static
 
 from configuration import Configuration
-
 
 # TODO
 MESSAGE = """

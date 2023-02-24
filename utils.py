@@ -1,12 +1,11 @@
 import asyncio
-import errno
 import functools
 import hashlib
 import inspect
 import pickle
 import time
-from pathlib import Path
-from typing import Callable, TypeVar, ParamSpec
+from collections.abc import Callable
+from typing import ParamSpec, TypeVar
 
 from configuration import Configuration
 
@@ -15,84 +14,75 @@ def hash_string(string: str) -> str:
     return hashlib.sha256(string.encode("utf-8")).hexdigest()
 
 
-def safe_open(filename: Path, **kwargs):
-    dirname = filename.parent.resolve()
-    if not dirname.exists():
-        try:
-            dirname.mkdir(parents=True, exist_ok=True)
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-
-    return open(filename, **kwargs)
-
-
 R = TypeVar("R")
 P = ParamSpec("P")
 
 
-def file_cache(resource_name: str, key: str) -> Callable[P, R]:
+class FileCache:
 
-    directory = Configuration.CACHE_DIR / resource_name
+    def __init__(self, resource_name: str, key: str) -> None:
+        self.resource_name = resource_name
+        self.key_hash = hash_string(key)
+        self.cache_file = Configuration.CACHE_DIR / resource_name / (self.key_hash + ".txt")
 
-    key_hash = hash_string(key)
-
-    def read(file: Path) -> R:
-        with file.open("rb") as f:
+    def read(self) -> R:
+        with self.cache_file.open("rb") as f:
             content = pickle.load(f)
-        print(f"Resource {resource_name} with key {key_hash} loaded from cache")
+        print(f"Resource {self.resource_name} with key {self.key_hash} loaded from cache")
         return content
 
-    def write(file: Path, content: R) -> None:
+    def write(self, content: R) -> None:
         try:
-            with safe_open(file, mode="wb") as f:
+            self.cache_file.parent.mkdir(parents=True, exist_ok=True)
+            with self.cache_file.open(mode="wb") as f:
                 pickle.dump(content, f)
-            print(f"Resource {resource_name} with key {key_hash} saved to cache")
+            print(f"Resource {self.resource_name} with key {self.key_hash} saved to cache")
         except Exception as exc:
             print(f"Failed to write to cache: {str(exc)}")
 
-    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+    async def async_wrapper(self, func: Callable[P, R], *args, **kwargs) -> R:
+        """Wrapper for async functions"""
+        if self.cache_file.exists():
+            return self.read()
+        content = await func(*args, **kwargs)
+        self.write(content)
+        return content
 
-        filename: Path = directory / (key_hash + ".txt")
+    async def async_gen_wrapper(self, func: Callable[P, R], *args, **kwargs) -> R:
+        """Wrapper for async generators"""
+        if self.cache_file.exists():
+            for item in self.read():
+                yield item
+            return
+        content = []
+        async for item in func(*args, **kwargs):
+            content.append(item)
+        self.write(content)
+        for item in content:
+            yield item
 
-        # create async of sync wrapper based on the type of the wrapped function
+    def sync_wrapper(self, func: Callable[P, R], *args, **kwargs) -> R:
+        """Wrapper for sync functions"""
+        if self.cache_file.exists():
+            return self.read()
+        content = func(*args, **kwargs)
+        self.write(content)
+        return content
 
+    def __call__(self, func: Callable[P, R]) -> Callable[P, R]:
+        """Create async or sync wrapper based on the type of the wrapped function"""
         if asyncio.iscoroutinefunction(func):
-            @functools.wraps(func)
-            async def wrapper(*args, **kwargs):
-                if filename.exists():
-                    return read(filename)
-                content = await func(*args, **kwargs)
-                write(filename, content)
-                return content
+            wrapper = self.async_wrapper
         elif inspect.isasyncgenfunction(func):
-            @functools.wraps(func)
-            async def wrapper(*args, **kwargs):
-                if filename.exists():
-                    for item in read(filename):
-                        yield item
-                    return
-                content = []
-                async for item in func(*args, **kwargs):
-                    content.append(item)
-                write(filename, content)
-                for item in content:
-                    yield item
+            wrapper = self.async_gen_wrapper
         else:
-            @functools.wraps(func)
-            def wrapper(*args, **kwargs):
-                if filename.exists():
-                    return read(filename)
-                content = func(*args, **kwargs)
-                write(filename, content)
-                return content
+            wrapper = self.sync_wrapper
 
-        return wrapper
-
-    return decorator
+        return functools.wraps(func)(functools.partial(wrapper, func))
 
 
 def arg_key_file_cache(resource_name: str, is_method: bool = False) -> Callable[P, R]:
+    """Decorator to cache the result of a function call based on its unique arguments"""
     def decorator(func: Callable[P, R]):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -104,7 +94,7 @@ def arg_key_file_cache(resource_name: str, is_method: bool = False) -> Callable[
             ]
             # each function call is uniquely identified by its name and the argument it was called with
             key = func.__name__ + "__".join(kp for kp in key_parts if kp)
-            return file_cache(resource_name, key)(func)(*args, **kwargs)
+            return FileCache(resource_name, key)(func)(*args, **kwargs)
         return wrapper
     return decorator
 

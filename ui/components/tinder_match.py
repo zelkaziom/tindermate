@@ -1,4 +1,5 @@
 import asyncio
+import contextlib
 from contextlib import contextmanager
 from enum import Enum
 
@@ -8,14 +9,14 @@ from rich.text import Text
 from textual.app import ComposeResult
 from textual.css.query import NoMatches
 from textual.reactive import reactive
-from textual.widgets import Static, Button
+from textual.widgets import Button, Static
 
 from conversation.prompts import FirstMessagePrompt, MessageReplyPrompt, Prompt
-from tinder.schemas import MatchDetail, CurrentUser, Match
+from tinder.schemas import CurrentUser, Match, MatchDetail
 from ui import utils
-from ui.components.generic import Section, Row, SubTitle
+from ui.components.generic import Row, Section, SubTitle
 from ui.context import AppContext
-from ui.utils import render_link, render_markdown_info_list, random_delay
+from ui.utils import random_delay, render_link, render_markdown_info_list
 
 
 class MatchInfo(Static):
@@ -98,10 +99,8 @@ class TinderMatch(Static):
         if self.match_detail is None:
             self.match_detail = await self.ctx.tinder.fetch_detail_for(self.match)
             # populate the match info on the first load
-            try:
+            with contextlib.suppress(NoMatches):
                 self.query_one(MatchInfo).on_match_info_loaded(self.match_detail)
-            except NoMatches:
-                pass
 
         return self.match_detail
 
@@ -161,10 +160,8 @@ class TinderMatch(Static):
     def watch_result(self, result: RenderableType | None) -> None:
         if result is None:
             self.remove_class("expanded")
-            try:
+            with contextlib.suppress(NoMatches):
                 self.query_one("#results").update("")
-            except NoMatches:
-                pass
         else:
             self.add_class("expanded")
             self.query_one("#results").update(result)

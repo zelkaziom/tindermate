@@ -1,21 +1,21 @@
 import asyncio
-from typing import Coroutine
+from collections.abc import Coroutine
 
 from rich.console import RenderableType
 from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.containers import Container
 from textual.screen import Screen
-from textual.widgets import Header, Footer, Input, Static, Button
+from textual.widgets import Button, Footer, Header, Input, Static
 
 from configuration import Configuration
 from conversation.agent import ConversationAgent
 from tinder.client import create_tinder_client
 from ui.components.body import Body
-from ui.components.generic import Notification, AboveFold
+from ui.components.generic import AboveFold, Notification
 from ui.components.sidebar import Sidebar
 from ui.context import AppContext
-from ui.tokens import Tokens, validate_tokens, InvalidTokenError
+from ui.tokens import InvalidTokenError, Tokens, validate_tokens
 
 
 class LoadingScreen(Screen):
@@ -47,7 +47,7 @@ class AuthScreen(Screen):
                 tokens.save()
                 self.app.push_screen(AppScreen())
             except InvalidTokenError as exc:
-                message = Text.assemble((f"ERROR: ", "bold red"), exc.args[0])
+                message = Text.assemble(("ERROR: ", "bold red"), exc.args[0])
                 self.app.show_notification(message, delay=10)
 
 
@@ -135,7 +135,7 @@ class Tindermate(App):
             task.result()
         except Exception as exc:
             message = Text.assemble(
-                (f"ERROR:", "bold red"),
+                ("ERROR:", "bold red"),
                 f" Error while fetching data: {str(exc)}"
             )
             self.show_notification(message, delay=10)

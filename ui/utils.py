@@ -1,7 +1,7 @@
 import asyncio
 import random
+from collections.abc import Coroutine
 from datetime import datetime
-from typing import Coroutine
 
 from rich.markdown import Markdown
 

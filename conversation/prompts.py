@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
 
-from jinja2 import Environment, select_autoescape, PackageLoader
+from jinja2 import Environment, PackageLoader, select_autoescape
 
 from configuration import Configuration
-from tinder.schemas import Message, UserDetail, CurrentUser
+from tinder.schemas import CurrentUser, Message, UserDetail
 from tinder.utils import calculate_age
 
 

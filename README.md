@@ -1,3 +1,3 @@
 # TinderMate
 
-A GPT-Powered Tinder tool for effortless chatting
+A GPT-Powered Message Generator for Your Tinder Matches

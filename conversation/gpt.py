@@ -2,7 +2,6 @@ import openai
 from openai.error import AuthenticationError
 
 from configuration import Configuration
-
 from utils import arg_key_file_cache
 
 
@@ -19,7 +18,7 @@ class GPTClient:
         self,
         prompt: str,
         num_choices: int,
-        max_tokens: int ,
+        max_tokens: int,
         temperature: float,
         stop_words: list[str] = None,
     ) -> list[str]:
