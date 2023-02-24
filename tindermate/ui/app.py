@@ -4,15 +4,15 @@ from textual.containers import Container
 from textual.screen import Screen
 from textual.widgets import Button, Footer, Header, Input, Static
 
-from configuration import Configuration
-from conversation.agent import ConversationAgent
-from tinder.client import create_tinder_client
-from ui import utils
-from ui.components.body import Body
-from ui.components.generic import AboveFold
-from ui.components.sidebar import Sidebar
-from ui.context import AppContext
-from ui.tokens import InvalidTokenError, Tokens, validate_tokens
+from tindermate.configuration import Configuration
+from tindermate.conversation.agent import ConversationAgent
+from tindermate.tinder.client import create_tinder_client
+from tindermate.ui import utils
+from tindermate.ui.components.body import Body
+from tindermate.ui.components.generic import AboveFold
+from tindermate.ui.components.sidebar import Sidebar
+from tindermate.ui.context import AppContext
+from tindermate.ui.tokens import InvalidTokenError, Tokens, validate_tokens
 
 
 class LoadingScreen(Screen):

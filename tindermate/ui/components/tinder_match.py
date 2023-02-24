@@ -1,7 +1,6 @@
 import contextlib
 from contextlib import contextmanager
 from enum import Enum
-from typing import cast
 
 from rich.console import RenderableType
 from rich.markdown import Markdown
@@ -11,13 +10,13 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Button, Static
 
-from conversation.prompts import FirstMessagePrompt, MessageReplyPrompt, Prompt
-from tinder.schemas import CurrentUser, Match, MatchDetail
-from type_aliases import EmptyGenerator
-from ui import utils
-from ui.components.generic import Row, Section, SubTitle
-from ui.context import AppContext
-from ui.utils import render_link, render_markdown_info_list
+from tindermate.conversation.prompts import FirstMessagePrompt, MessageReplyPrompt, Prompt
+from tindermate.tinder.schemas import CurrentUser, Match, MatchDetail
+from tindermate.type_aliases import EmptyGenerator
+from tindermate.ui import utils
+from tindermate.ui.components.generic import Row, Section, SubTitle
+from tindermate.ui.context import AppContext
+from tindermate.ui.utils import render_link, render_markdown_info_list
 
 
 class MatchInfo(Static):
@@ -112,7 +111,7 @@ class TinderMatch(Static):
     async def handle_generation(self) -> None:
         with self.loading_data():
             result = await self.ctx.agent.complete_text(await self.get_prompt())
-            self.result = cast(reactive, self.render_result(result))
+            self.result = self.render_result(result)
 
         utils.show_notification(
             self.app,
@@ -123,7 +122,7 @@ class TinderMatch(Static):
         with self.loading_data():
             prompt = await self.get_prompt()
             lines = ["**Prompt**".upper(), "", prompt.render().replace("\n", "\n\n")]
-            self.result = cast(reactive, Markdown("\n".join(lines)))
+            self.result = Markdown("\n".join(lines))
 
         utils.show_notification(
             self.app,
@@ -133,15 +132,15 @@ class TinderMatch(Static):
     async def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id in ["generate", "regenerate"]:
             utils.fire_task(self.app, self.handle_generation())
-            self.current_view = cast(reactive, MatchView.RESULT)
+            self.current_view = MatchView.RESULT
 
         elif event.button.id == "show-prompt":
             utils.fire_task(self.app, self.handle_show_prompt())
-            self.current_view = cast(reactive, MatchView.PROMPT)
+            self.current_view = MatchView.PROMPT
 
         elif event.button.id == "discard":
-            self.result = cast(reactive, None)
-            self.current_view = cast(reactive, MatchView.DEFAULT)
+            self.result = None
+            self.current_view = MatchView.DEFAULT
 
     def watch_current_view(self, current_view: MatchView) -> None:
         """Replace the rendered buttons with a new set"""

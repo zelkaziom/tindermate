@@ -1,11 +1,11 @@
 import asyncio
 from dataclasses import dataclass
 
-from configuration import Configuration
-from conversation.agent import ConversationAgent
-from conversation.gpt import OpenAIAuthError
-from tinder.client import create_tinder_client
-from tinder.exception import TinderAuthError
+from tindermate.configuration import Configuration
+from tindermate.conversation.agent import ConversationAgent
+from tindermate.conversation.gpt import OpenAIAuthError
+from tindermate.tinder.client import create_tinder_client
+from tindermate.tinder.exception import TinderAuthError
 
 
 class InvalidTokenError(Exception):

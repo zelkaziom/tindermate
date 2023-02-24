@@ -6,11 +6,11 @@ from operator import attrgetter
 import aiohttp
 from aiohttp import ClientResponseError
 
-from configuration import Configuration
-from tinder.exception import TinderAuthError
-from tinder.schemas import CurrentUser, LikedUserResult, Match, MatchDetail, Message, UserDetail
-from type_aliases import AnyDict
-from utils import FileCacheDecorator, arg_key_file_cache
+from tindermate.configuration import Configuration
+from tindermate.tinder.exception import TinderAuthError
+from tindermate.tinder.schemas import CurrentUser, LikedUserResult, Match, MatchDetail, Message, UserDetail
+from tindermate.type_aliases import AnyDict
+from tindermate.utils import FileCacheDecorator, arg_key_file_cache
 
 
 class TinderClient:

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from conversation.agent import ConversationAgent
-from tinder.client import TinderClient
+from tindermate.conversation.agent import ConversationAgent
+from tindermate.tinder.client import TinderClient
 
 
 @dataclass

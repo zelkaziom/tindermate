@@ -4,7 +4,7 @@ from textual.containers import Container, Horizontal
 from textual.reactive import watch
 from textual.widgets import Checkbox, Static
 
-from configuration import Configuration
+from tindermate.configuration import Configuration
 
 # TODO
 MESSAGE = """

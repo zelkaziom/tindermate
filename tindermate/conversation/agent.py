@@ -1,6 +1,6 @@
-from configuration import Configuration
-from conversation.gpt import GPTClient, create_gpt_client
-from conversation.prompts import Prompt
+from tindermate.configuration import Configuration
+from tindermate.conversation.gpt import GPTClient, create_gpt_client
+from tindermate.conversation.prompts import Prompt
 
 
 class ConversationAgent:

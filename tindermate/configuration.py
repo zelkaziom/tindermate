@@ -3,7 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-BASE_DIR = Path(os.path.abspath(__file__)).parent
+BASE_DIR = Path(os.path.abspath(__file__)).parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -41,7 +41,7 @@ class Configuration:
     CACHE_DIR = path_to("data", "cache")
     LOG_DIR = path_to("data", "cache")
     APP_VERSION = "0.0.1"
-    CSS_PATH = path_to("ui/static/") / "styles.css"
+    CSS_PATH = path_to("tindermate/ui/static/") / "styles.css"
 
     TOKEN_FILE = BASE_DIR / ".tokens"
 

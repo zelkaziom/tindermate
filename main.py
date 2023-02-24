@@ -1,4 +1,4 @@
-from ui.app import Tindermate
+from tindermate.ui.app import Tindermate
 
 
 def main() -> None:

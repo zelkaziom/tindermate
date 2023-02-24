@@ -8,7 +8,7 @@ import time
 from collections.abc import Callable
 from typing import Generic, ParamSpec, TypeVar
 
-from configuration import Configuration
+from tindermate.configuration import Configuration
 
 
 def hash_string(string: str) -> str:

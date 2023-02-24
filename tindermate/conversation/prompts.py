@@ -3,9 +3,9 @@ from dataclasses import dataclass
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from configuration import Configuration
-from tinder.schemas import CurrentUser, Message, UserDetail
-from type_aliases import AnyDict
+from tindermate.configuration import Configuration
+from tindermate.tinder.schemas import CurrentUser, Message, UserDetail
+from tindermate.type_aliases import AnyDict
 
 
 @dataclass
@@ -34,7 +34,7 @@ class Prompt(ABC):
     def __init__(self, template: str):
         self._template = template
         self._template_env = Environment(
-            loader=PackageLoader("conversation", "templates"),
+            loader=PackageLoader("tindermate.conversation", "templates"),
             autoescape=select_autoescape(),
         )
 

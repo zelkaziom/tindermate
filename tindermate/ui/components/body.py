@@ -9,14 +9,14 @@ from textual.reactive import Reactive, reactive
 from textual.widget import Widget
 from textual.widgets import Static
 
-from tinder.schemas import CurrentUser, Match
-from type_aliases import EmptyGenerator
-from ui import utils
-from ui.components.generic import Column, Row, SubTitle, Tab
-from ui.components.sidebar import Title
-from ui.components.tinder_match import MessagedTinderMatch, NewTinderMatch, TinderMatch
-from ui.context import AppContext
-from ui.utils import render_link, render_markdown_info_list
+from tindermate.tinder.schemas import CurrentUser, Match
+from tindermate.type_aliases import EmptyGenerator
+from tindermate.ui import utils
+from tindermate.ui.components.generic import Column, Row, SubTitle, Tab
+from tindermate.ui.components.sidebar import Title
+from tindermate.ui.components.tinder_match import MessagedTinderMatch, NewTinderMatch, TinderMatch
+from tindermate.ui.context import AppContext
+from tindermate.ui.utils import render_link, render_markdown_info_list
 
 
 class UserProfile(Container):

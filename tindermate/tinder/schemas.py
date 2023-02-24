@@ -2,8 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field
 
-from tinder.utils import calculate_age, resolve_gender
-from type_aliases import AnyDict
+from tindermate.tinder.utils import calculate_age, resolve_gender
+from tindermate.type_aliases import AnyDict
 
 
 class Interest(BaseModel):

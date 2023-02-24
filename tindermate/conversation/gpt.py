@@ -1,9 +1,9 @@
 import openai
 from openai.error import AuthenticationError
 
-from configuration import Configuration
-from type_aliases import AnyDict
-from utils import arg_key_file_cache
+from tindermate.configuration import Configuration
+from tindermate.type_aliases import AnyDict
+from tindermate.utils import arg_key_file_cache
 
 
 class OpenAIAuthError(Exception):

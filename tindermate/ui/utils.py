@@ -10,8 +10,8 @@ from rich.markdown import Markdown
 from rich.text import Text
 from textual.app import App
 
-from type_aliases import AnyDict
-from ui.components.generic import Notification
+from tindermate.type_aliases import AnyDict
+from tindermate.ui.components.generic import Notification
 
 # we have to store tasks due to https://twitter.com/willmcgugan/status/1624419352211603461
 _TASKS: list[asyncio.Task] = []
