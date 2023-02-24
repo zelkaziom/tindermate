@@ -100,6 +100,7 @@ class TinderMatch(Static):
 
         return self.match_detail
 
+
     @contextmanager
     def loading_data(self) -> EmptyGenerator:
         loading = self.query_one("#loading-data")
