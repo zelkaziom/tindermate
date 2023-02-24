@@ -1,7 +1,3 @@
-import asyncio
-from collections.abc import Coroutine
-
-from rich.console import RenderableType
 from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.containers import Container
@@ -11,8 +7,9 @@ from textual.widgets import Button, Footer, Header, Input, Static
 from configuration import Configuration
 from conversation.agent import ConversationAgent
 from tinder.client import create_tinder_client
+from ui import utils
 from ui.components.body import Body
-from ui.components.generic import AboveFold, Notification
+from ui.components.generic import AboveFold
 from ui.components.sidebar import Sidebar
 from ui.context import AppContext
 from ui.tokens import InvalidTokenError, Tokens, validate_tokens
@@ -47,7 +44,7 @@ class AuthScreen(Screen):
                 self.app.push_screen(AppScreen())
             except InvalidTokenError as exc:
                 message = Text.assemble(("ERROR: ", "bold red"), exc.args[0])
-                self.app.show_notification(message, delay=10)
+                utils.show_notification(self.app, message, delay=10)
 
 
 class AppScreen(Screen):
@@ -55,8 +52,8 @@ class AppScreen(Screen):
         super().__init__()
         tokens = Tokens.load()
         self.ctx = AppContext(
-            agent=ConversationAgent(api_key=tokens.openai_token),
-            tinder=create_tinder_client(auth_token=tokens.tinder_token),
+            agent=ConversationAgent(api_key=tokens.openai_token or ""),
+            tinder=create_tinder_client(auth_token=tokens.tinder_token or ""),
         )
 
     def compose(self) -> ComposeResult:
@@ -75,8 +72,6 @@ class Tindermate(App):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # we have to store tasks due to https://twitter.com/willmcgugan/status/1624419352211603461
-        self.tasks: list[asyncio.Task] = []
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
@@ -91,10 +86,10 @@ class Tindermate(App):
         try:
             tokens = Tokens.load()
             await validate_tokens(tokens)
-            self.show_notification("The tokens are valid")
+            utils.show_notification(self, "The tokens are valid")
             self.push_screen(AppScreen())
         except InvalidTokenError as exc:
-            self.show_notification(exc.args[0])
+            utils.show_notification(self, exc.args[0])
             self.push_screen(AuthScreen())
 
     # async def on_input_changed(self, message: Input.Changed) -> None:
@@ -118,24 +113,3 @@ class Tindermate(App):
         import webbrowser
 
         webbrowser.open(link)
-
-    def fire_task(self, coro: Coroutine) -> asyncio.Task:
-        task = asyncio.create_task(coro)
-        task.add_done_callback(self.notify_task_error)
-        self.tasks.append(task)
-        return task
-
-    def notify_task_error(self, task: asyncio.Task) -> None:
-        if task.cancelled():
-            print(f"Task {task.get_name()} cancelled")
-            return
-        try:
-            task.result()
-        except Exception as exc:
-            message = Text.assemble(("ERROR:", "bold red"), f" Error while fetching data: {str(exc)}")
-            self.show_notification(message, delay=10)
-            raise exc
-
-    def show_notification(self, text: RenderableType, delay: int = 3) -> None:
-        self.query(Notification).remove()
-        self.screen.mount(Notification(text, delay))

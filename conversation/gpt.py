@@ -2,6 +2,7 @@ import openai
 from openai.error import AuthenticationError
 
 from configuration import Configuration
+from type_aliases import AnyDict
 from utils import arg_key_file_cache
 
 
@@ -19,7 +20,7 @@ class GPTClient:
         num_choices: int,
         max_tokens: int,
         temperature: float,
-        stop_words: list[str] = None,
+        stop_words: list[str] | None = None,
     ) -> list[str]:
         if len(stop_words or []) > 4:
             raise ValueError("Provide maximum of 4 stopwords")
@@ -44,7 +45,7 @@ class GPTClient:
 
         return self.parse_response(resp)
 
-    def parse_response(self, response: dict) -> list[str]:
+    def parse_response(self, response: AnyDict) -> list[str]:
         for choice in response["choices"]:
             if (reason := choice["finish_reason"]) != "stop":
                 print(f"Generation {choice['index']} finished before the end token was reached, {reason=}")
@@ -56,7 +57,7 @@ class ChatGPTClient(GPTClient):
     def __init__(self):
         super().__init__("text-chat-davinci-002-20221122")
 
-    def parse_response(self, response: dict) -> list[str]:
+    def parse_response(self, response: AnyDict) -> list[str]:
         for choice in response["choices"]:
             if (reason := choice["finish_details"]["type"]) != "stop":
                 print(f"Generation {choice['index']} finished before the end token was reached, {reason=}")
@@ -79,7 +80,7 @@ class CachingGPTClient(GPTClient):
         num_choices: int,
         max_tokens: int,
         temperature: float,
-        stop_words: list[str] = None,
+        stop_words: list[str] | None = None,
     ) -> list[str]:
         if self._num_requests > 20:
             raise Exception("Too many requests, exiting to prevent accidental infinite loop")

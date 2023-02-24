@@ -1,4 +1,3 @@
-import asyncio
 import contextlib
 from contextlib import contextmanager
 from enum import Enum
@@ -13,10 +12,11 @@ from textual.widgets import Button, Static
 
 from conversation.prompts import FirstMessagePrompt, MessageReplyPrompt, Prompt
 from tinder.schemas import CurrentUser, Match, MatchDetail
+from type_aliases import EmptyGenerator
 from ui import utils
 from ui.components.generic import Row, Section, SubTitle
 from ui.context import AppContext
-from ui.utils import random_delay, render_link, render_markdown_info_list
+from ui.utils import render_link, render_markdown_info_list
 
 
 class MatchInfo(Static):
@@ -45,8 +45,8 @@ class MatchView(Enum):
 
 
 class TinderMatch(Static):
-    result: RenderableType | None = reactive(None)
-    current_view: MatchView = reactive(MatchView.DEFAULT, init=False)
+    result: reactive[RenderableType | None] = reactive(None)
+    current_view: reactive[MatchView] = reactive(MatchView.DEFAULT, init=False)
 
     def __init__(self, context: AppContext, match: Match, current_user: CurrentUser, batch: int):
         super().__init__()
@@ -88,8 +88,8 @@ class TinderMatch(Static):
 
     async def on_mount(self) -> None:
         # offset the request, so we don't fire all requests at once
-        task = asyncio.create_task(random_delay(self.get_match_detail(), (self.batch, self.batch + 1)))
-        task.add_done_callback(self.app.notify_task_error)
+        delay_interval = (self.batch, self.batch + 1)
+        utils.fire_task(self.app, self.get_match_detail(), delay_interval)
 
     async def get_match_detail(self) -> MatchDetail:
         if self.match_detail is None:
@@ -101,7 +101,7 @@ class TinderMatch(Static):
         return self.match_detail
 
     @contextmanager
-    def loading_data(self):
+    def loading_data(self) -> EmptyGenerator:
         loading = self.query_one("#loading-data")
         loading.remove_class("hidden")
         yield
@@ -112,8 +112,10 @@ class TinderMatch(Static):
         with self.loading_data():
             result = await self.ctx.agent.complete_text(await self.get_prompt())
             self.result = self.render_result(result)
-        self.app.show_notification(
-            Text.assemble("Messages for ", (f"'{self.match.person.name}'", "bold green"), " successfully generated")
+
+        utils.show_notification(
+            self.app,
+            Text.assemble("Messages for ", (f"'{self.match.person.name}'", "bold green"), " successfully generated"),
         )
 
     async def handle_show_prompt(self) -> None:
@@ -121,24 +123,26 @@ class TinderMatch(Static):
             prompt = await self.get_prompt()
             lines = ["**Prompt**".upper(), "", prompt.render().replace("\n", "\n\n")]
             self.result = Markdown("\n".join(lines))
-        self.app.show_notification(
-            Text.assemble("Prompt for ", (f"'{self.match.person.name}'", "bold green"), " successfully generated")
+
+        utils.show_notification(
+            self.app,
+            Text.assemble("Prompt for ", (f"'{self.match.person.name}'", "bold green"), " successfully generated"),
         )
 
     async def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id in ["generate", "regenerate"]:
-            self.app.fire_task(self.handle_generation())
+            utils.fire_task(self.app, self.handle_generation())
             self.current_view = MatchView.RESULT
 
         elif event.button.id == "show-prompt":
-            self.app.fire_task(self.handle_show_prompt())
+            utils.fire_task(self.app, self.handle_show_prompt())
             self.current_view = MatchView.PROMPT
 
         elif event.button.id == "discard":
             self.result = None
             self.current_view = MatchView.DEFAULT
 
-    def watch_current_view(self, current_view: MatchView):
+    def watch_current_view(self, current_view: MatchView) -> None:
         """Replace the rendered buttons with a new set"""
         other_views = [f"#{view.value}" for view in list(MatchView) if view != current_view]
         self.query(", ".join(other_views)).add_class("hidden")
@@ -149,10 +153,10 @@ class TinderMatch(Static):
         if result is None:
             self.remove_class("expanded")
             with contextlib.suppress(NoMatches):
-                self.query_one("#results").update("")
+                self.query_one("#results", Static).update("")
         else:
             self.add_class("expanded")
-            self.query_one("#results").update(result)
+            self.query_one("#results", Static).update(result)
 
     async def get_prompt(self) -> Prompt:
         raise NotImplementedError()

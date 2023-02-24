@@ -1,7 +1,7 @@
 from ui.app import Tindermate
 
 
-def main():
+def main() -> None:
     app = Tindermate()
     app.run()
 

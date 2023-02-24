@@ -37,8 +37,8 @@ class Tokens:
 
 async def validate_tokens(tokens: Tokens) -> None:
     await asyncio.sleep(5)
-    tinder = create_tinder_client(auth_token=tokens.tinder_token)
-    agent = ConversationAgent(api_key=tokens.openai_token)
+    tinder = create_tinder_client(auth_token=tokens.tinder_token or "")
+    agent = ConversationAgent(api_key=tokens.openai_token or "")
 
     try:
         await asyncio.gather(tinder.current_user_info(), agent.test_connection())

@@ -1,13 +1,17 @@
 from collections.abc import Callable, Coroutine
 from contextlib import contextmanager
 from operator import attrgetter
+from typing import Any
 
 from textual.app import ComposeResult
 from textual.containers import Container
 from textual.reactive import Reactive, reactive
+from textual.widget import Widget
 from textual.widgets import Static
 
-from tinder.schemas import CurrentUser
+from tinder.schemas import CurrentUser, Match
+from type_aliases import EmptyGenerator
+from ui import utils
 from ui.components.generic import Column, Row, SubTitle, Tab
 from ui.components.sidebar import Title
 from ui.components.tinder_match import MessagedTinderMatch, NewTinderMatch, TinderMatch
@@ -85,10 +89,10 @@ class Body(Static):
             task = self.fetch_messaged_matches()
         else:
             raise ValueError(f"Unknown tab {active_tab}")
-        self.app.fire_task(task)
+        utils.fire_task(self.app, task)
 
     @contextmanager
-    def loading_data(self):
+    def loading_data(self) -> EmptyGenerator:
         loading = self.query_one("#loading-matches")
         loading.remove_class("hidden")
         yield
@@ -105,13 +109,18 @@ class Body(Static):
             self.ctx.tinder.matches(messaged=True), MessagedTinderMatch, sort_key=lambda m: m.messages[-1].sent_date
         )
 
-    async def fetch_tab_content(self, fetch_coro: Coroutine, widget_cls: type[TinderMatch], sort_key: Callable) -> None:
+    async def fetch_tab_content(
+        self,
+        fetch_coro: Coroutine[Any, Any, list[Match]],
+        widget_cls: type[TinderMatch],
+        sort_key: Callable[[Match], Any],
+    ) -> None:
         with self.loading_data():
-            matches = list(await fetch_coro)
             current_user = await self.get_current_user()
+            matches = list(await fetch_coro)
             sorted_matches = sorted(matches, key=sort_key, reverse=True)
             sliced_matches = sorted_matches[: self._TAB_CONTENT_MAX_ITEMS]
-            widgets = []
+            widgets: list[Widget] = []
             for idx, match in enumerate(sliced_matches):
                 widgets.append(widget_cls(self.ctx, match, current_user, batch=idx))
 

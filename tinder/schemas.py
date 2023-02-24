@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import Any
 
 from pydantic import BaseModel, Field
 
 from tinder.utils import calculate_age, resolve_gender
+from type_aliases import AnyDict
 
 
 class Interest(BaseModel):
@@ -27,9 +27,9 @@ class Job(BaseModel):
     def as_string(self) -> str | None:
         if self.title is not None:
             return self.title.get("name")
-
         if self.company is not None:
             return self.company.get("name")
+        return None
 
 
 class School(BaseModel):
@@ -54,16 +54,24 @@ class User(BaseModel):
     photos: list[Photo]
 
     @property
-    def age(self) -> int:
-        return calculate_age(self.birth_date)
+    def age(self) -> int | None:
+        if self.birth_date is None:
+            return None
+        return calculate_age(self.birth_date.date())
 
     @property
     def gender_str(self) -> str | None:
         return resolve_gender(self.gender)
 
     @property
-    def bio_oneline(self) -> str:
-        return "; ".join(line.strip() for line in self.bio.split("\n") if line.strip())
+    def bio_oneline(self) -> str | None:
+        if self.bio is None:
+            return None
+        lines = []
+        for line in self.bio.split("\n"):
+            if line and (line := line.strip()):
+                lines.append(line)
+        return "; ".join(lines)
 
 
 class Country(BaseModel):
@@ -131,12 +139,12 @@ class Message(BaseModel):
     from_: str = Field(alias="from")
     timestamp: int
 
-    def dict(self, *args, **kwargs) -> dict[str, Any]:
+    def dict(self, *args, **kwargs) -> AnyDict:
         return super().dict(*args, **kwargs) | {"from": self.from_}
 
 
 class Match(BaseModel):
-    seen: dict
+    seen: AnyDict
     id: str
     closed: bool
     created_date: datetime
@@ -168,7 +176,7 @@ class MatchDetail(Match):
     person: UserDetail
 
     @classmethod
-    def parse_obj(cls, obj: dict) -> "MatchDetail":
+    def parse_obj(cls, obj: AnyDict) -> "MatchDetail":
         if "id" in obj["person"]:
             obj["person"]["_id"] = obj["person"]["id"]
         return super().parse_obj(obj)  # noqa

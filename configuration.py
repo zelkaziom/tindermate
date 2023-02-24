@@ -14,7 +14,7 @@ def path_to(*parts: str) -> Path:
     return path
 
 
-def env2bool(value: str, default: bool | None = None) -> bool:
+def env2bool(value: str | None, default: bool | None = None) -> bool:
     if not value and default is not None:
         return default
 
@@ -34,8 +34,8 @@ class OpenAIConfiguration:
 
 
 class Configuration:
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
-    TINDER_AUTH_TOKEN = os.getenv("TINDER_AUTH_TOKEN")
+    OPENAI_API_KEY: str | None = os.getenv("OPENAI_API_KEY")
+    TINDER_AUTH_TOKEN: str | None = os.getenv("TINDER_AUTH_TOKEN")
     DEBUG: bool = env2bool(os.getenv("DEBUG"), default=False)
 
     CACHE_DIR = path_to("data", "cache")

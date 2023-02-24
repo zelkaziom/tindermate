@@ -2,7 +2,6 @@ import asyncio
 import random
 from http import HTTPStatus
 from operator import attrgetter
-from typing import Any
 
 import aiohttp
 from aiohttp import ClientResponseError
@@ -10,7 +9,8 @@ from aiohttp import ClientResponseError
 from configuration import Configuration
 from tinder.exception import TinderAuthError
 from tinder.schemas import CurrentUser, LikedUserResult, Match, MatchDetail, Message, UserDetail
-from utils import arg_key_file_cache
+from type_aliases import AnyDict
+from utils import FileCacheDecorator, arg_key_file_cache
 
 
 class TinderClient:
@@ -34,7 +34,7 @@ class TinderClient:
         # by default, we avoid firing many instant requests to imitate human-like behaviour
         self._sleep_between_requests = sleep_between_requests
 
-    def _headers(self) -> dict[str, Any]:
+    def _headers(self) -> AnyDict:
         return {
             **self._FAKE_HEADERS,
             "x-auth-token": self._auth_token,
@@ -44,10 +44,10 @@ class TinderClient:
         secs = self._sleep_between_requests * random.random()
         await asyncio.sleep(secs)
 
-    async def _get_v2(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+    async def _get_v2(self, path: str, params: AnyDict | None = None) -> AnyDict:
         return (await self._get(f"/v2{path}", params))["data"]
 
-    async def _get(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+    async def _get(self, path: str, params: AnyDict | None = None) -> AnyDict:
         url = f"{self._BASE_URL}{path}"
         params = {"locale": "en"} | (params or {})
 
@@ -93,7 +93,7 @@ class TinderClient:
         return CurrentUser.parse_obj(resp)
 
 
-_tinder_cache = arg_key_file_cache("tinder", is_method=True)
+_tinder_cache: FileCacheDecorator = arg_key_file_cache("tinder", is_method=True)
 
 
 class CachingTinderClient(TinderClient):

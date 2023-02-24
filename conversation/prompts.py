@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from configuration import Configuration
 from tinder.schemas import CurrentUser, Message, UserDetail
-from tinder.utils import calculate_age
+from type_aliases import AnyDict
 
 
 @dataclass
@@ -40,7 +39,7 @@ class Prompt(ABC):
         )
 
     @abstractmethod
-    def get_template_vars(self) -> dict[str, Any]:
+    def get_template_vars(self) -> AnyDict:
         ...
 
     @abstractmethod
@@ -73,14 +72,14 @@ class MessageReplyPrompt(Prompt):
         )
         self._grammar_2 = Grammar.for_gender(other_gender)
 
-    def get_template_vars(self) -> dict[str, Any]:
+    def get_template_vars(self) -> AnyDict:
         message_history = self._message_history[-self._history_limit :]
         num_hidden_messages = max(0, len(self._message_history) - self._history_limit)
 
-        message_history = [(message.from_ == self._current_user.id, message.message) for message in message_history]
+        message_history_var = [(message.from_ == self._current_user.id, message.message) for message in message_history]
 
         return {
-            "message_history": message_history,
+            "message_history": message_history_var,
             "num_hidden_messages": num_hidden_messages,
             "_1": self._grammar_1,
             "_2": self._grammar_2,
@@ -102,12 +101,12 @@ class FirstMessagePrompt(Prompt):
         )
         self._grammar_2 = Grammar.for_gender(other_gender)
 
-    def get_template_vars(self) -> dict[str, Any]:
+    def get_template_vars(self) -> AnyDict:
         return {
             "name": self._matched_user.name,
             "bio": None if not (bio := self._matched_user.bio) else bio.replace("\n", " "),
             "city": None if (city := self._matched_user.city) is None else city.name,
-            "age": calculate_age(self._matched_user.birth_date),
+            "age": self._matched_user.age,
             "school": self._matched_user.school,
             "job": self._matched_user.job,
             "interests": [
