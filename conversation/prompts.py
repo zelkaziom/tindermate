@@ -32,7 +32,6 @@ class Grammar:
 
 
 class Prompt(ABC):
-
     def __init__(self, template: str):
         self._template = template
         self._template_env = Environment(
@@ -60,7 +59,7 @@ class MessageReplyPrompt(Prompt):
         current_user: CurrentUser,
         matched_user: UserDetail,
         message_history: list[Message],
-        history_limit: int = 10
+        history_limit: int = 10,
     ):
         super().__init__(Configuration.MESSAGE_REPLY_PROMPT_TEMPLATE)
         self._current_user = current_user
@@ -70,20 +69,15 @@ class MessageReplyPrompt(Prompt):
 
         self._grammar_1 = Grammar.for_gender(self._current_user.gender)
         other_gender = (
-            self._matched_user.gender
-            if self._matched_user.gender is not None
-            else self._current_user.gender_filter
+            self._matched_user.gender if self._matched_user.gender is not None else self._current_user.gender_filter
         )
         self._grammar_2 = Grammar.for_gender(other_gender)
 
     def get_template_vars(self) -> dict[str, Any]:
-        message_history = self._message_history[-self._history_limit:]
+        message_history = self._message_history[-self._history_limit :]
         num_hidden_messages = max(0, len(self._message_history) - self._history_limit)
 
-        message_history = [
-            (message.from_ == self._current_user.id, message.message)
-            for message in message_history
-        ]
+        message_history = [(message.from_ == self._current_user.id, message.message) for message in message_history]
 
         return {
             "message_history": message_history,
@@ -104,9 +98,7 @@ class FirstMessagePrompt(Prompt):
         self._matched_user = matched_user
         self._grammar_1 = Grammar.for_gender(self._current_user.gender)
         other_gender = (
-            self._matched_user.gender
-            if self._matched_user.gender is not None
-            else self._current_user.gender_filter
+            self._matched_user.gender if self._matched_user.gender is not None else self._current_user.gender_filter
         )
         self._grammar_2 = Grammar.for_gender(other_gender)
 
@@ -119,8 +111,7 @@ class FirstMessagePrompt(Prompt):
             "school": self._matched_user.school,
             "job": self._matched_user.job,
             "interests": [
-                (interest, interest in self._current_user.interests)
-                for interest in self._matched_user.interests
+                (interest, interest in self._current_user.interests) for interest in self._matched_user.interests
             ],
             "_1": self._grammar_1,
             "_2": self._grammar_2,

@@ -20,11 +20,10 @@ from ui.utils import random_delay, render_link, render_markdown_info_list
 
 
 class MatchInfo(Static):
-
     def on_match_info_loaded(self, match: MatchDetail) -> None:
         match_info = {
             "Age": match.person.age,
-            "Interests": ', '.join(match.person.interests),
+            "Interests": ", ".join(match.person.interests),
             "City": city.name if (city := match.person.city) else None,
             "School": match.person.school,
             "Job": match.person.job,
@@ -32,8 +31,10 @@ class MatchInfo(Static):
         }
         if len(match.messages) > 0:
             last_message = match.messages[-1]
-            match_info["Last message"] = f"{utils.format_datetime(last_message.sent_date)} " \
-                                         f"({'them' if last_message.from_ == match.person.id else 'you'})"
+            match_info["Last message"] = (
+                f"{utils.format_datetime(last_message.sent_date)} "
+                f"({'them' if last_message.from_ == match.person.id else 'you'})"
+            )
         self.update(render_markdown_info_list(match_info))
 
 
@@ -44,7 +45,6 @@ class MatchView(Enum):
 
 
 class TinderMatch(Static):
-
     result: RenderableType | None = reactive(None)
     current_view: MatchView = reactive(MatchView.DEFAULT, init=False)
 
@@ -61,10 +61,8 @@ class TinderMatch(Static):
 
         yield Section(
             Row(
-                SubTitle(
-                    render_link(link=self.match.open_messages_link, label=self.match.person.name.upper())
-                ),
-                Static(f"Matched {utils.format_datetime(self.match.created_date)}", classes="right")
+                SubTitle(render_link(link=self.match.open_messages_link, label=self.match.person.name.upper())),
+                Static(f"Matched {utils.format_datetime(self.match.created_date)}", classes="right"),
             ),
             MatchInfo(classes="pad"),
             Row(
@@ -86,9 +84,7 @@ class TinderMatch(Static):
             ),
         )
         yield Static("Loading data...", id="loading-data", classes="hidden text-row")
-        yield Section(
-            Static(id="results"), id="results-container"
-        )
+        yield Section(Static(id="results"), id="results-container")
 
     async def on_mount(self) -> None:
         # offset the request, so we don't fire all requests at once
@@ -117,11 +113,7 @@ class TinderMatch(Static):
             result = await self.ctx.agent.complete_text(await self.get_prompt())
             self.result = self.render_result(result)
         self.app.show_notification(
-            Text.assemble(
-                "Messages for ",
-                (f"'{self.match.person.name}'", "bold green"),
-                " successfully generated"
-            )
+            Text.assemble("Messages for ", (f"'{self.match.person.name}'", "bold green"), " successfully generated")
         )
 
     async def handle_show_prompt(self) -> None:
@@ -130,11 +122,7 @@ class TinderMatch(Static):
             lines = ["**Prompt**".upper(), "", prompt.render().replace("\n", "\n\n")]
             self.result = Markdown("\n".join(lines))
         self.app.show_notification(
-            Text.assemble(
-                "Prompt for ",
-                (f"'{self.match.person.name}'", "bold green"),
-                " successfully generated"
-            )
+            Text.assemble("Prompt for ", (f"'{self.match.person.name}'", "bold green"), " successfully generated")
         )
 
     async def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -174,12 +162,8 @@ class TinderMatch(Static):
 
 
 class NewTinderMatch(TinderMatch):
-
     async def get_prompt(self) -> FirstMessagePrompt:
-        return FirstMessagePrompt(
-            current_user=self.current_user,
-            matched_user=(await self.get_match_detail()).person
-        )
+        return FirstMessagePrompt(current_user=self.current_user, matched_user=(await self.get_match_detail()).person)
 
     def render_result(self, result: list[str]) -> RenderableType:
         lines = ["**Message suggestions**".upper()]
@@ -190,13 +174,12 @@ class NewTinderMatch(TinderMatch):
 
 
 class MessagedTinderMatch(TinderMatch):
-
     async def get_prompt(self) -> MessageReplyPrompt:
         await self.ctx.tinder.fetch_messages_for(self.match)
         return MessageReplyPrompt(
             current_user=self.current_user,
             matched_user=(await self.get_match_detail()).person,
-            message_history=self.match.messages
+            message_history=self.match.messages,
         )
 
     def render_result(self, result: list[str]) -> RenderableType:

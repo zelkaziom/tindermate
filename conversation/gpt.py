@@ -10,7 +10,6 @@ class OpenAIAuthError(Exception):
 
 
 class GPTClient:
-
     def __init__(self, model: str):
         self.model = model
 
@@ -22,7 +21,6 @@ class GPTClient:
         temperature: float,
         stop_words: list[str] = None,
     ) -> list[str]:
-
         if len(stop_words or []) > 4:
             raise ValueError("Provide maximum of 4 stopwords")
 

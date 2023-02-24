@@ -19,7 +19,6 @@ from ui.tokens import InvalidTokenError, Tokens, validate_tokens
 
 
 class LoadingScreen(Screen):
-
     def compose(self) -> ComposeResult:
         yield AboveFold(Static("The application is loading..."))
 
@@ -65,7 +64,6 @@ class AppScreen(Screen):
 
 
 class Tindermate(App):
-
     BINDINGS = [
         ("ctrl+b", "toggle_sidebar", "Sidebar"),
         ("ctrl+t", "app.toggle_dark", "Toggle Dark mode"),
@@ -134,10 +132,7 @@ class Tindermate(App):
         try:
             task.result()
         except Exception as exc:
-            message = Text.assemble(
-                ("ERROR:", "bold red"),
-                f" Error while fetching data: {str(exc)}"
-            )
+            message = Text.assemble(("ERROR:", "bold red"), f" Error while fetching data: {str(exc)}")
             self.show_notification(message, delay=10)
             raise exc
 

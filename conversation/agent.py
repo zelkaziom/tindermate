@@ -4,8 +4,7 @@ from conversation.prompts import Prompt
 
 
 class ConversationAgent:
-
-    def __init__(self,  api_key: str, ai_client: GPTClient | None = None):
+    def __init__(self, api_key: str, ai_client: GPTClient | None = None):
         self._config = Configuration.OPENAI_CONFIG
         self._ai_client = ai_client or create_gpt_client(api_key, self._config.MODEL)
 

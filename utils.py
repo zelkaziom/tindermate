@@ -19,7 +19,6 @@ P = ParamSpec("P")
 
 
 class FileCache:
-
     def __init__(self, resource_name: str, key: str) -> None:
         self.resource_name = resource_name
         self.key_hash = hash_string(key)
@@ -83,19 +82,19 @@ class FileCache:
 
 def arg_key_file_cache(resource_name: str, is_method: bool = False) -> Callable[P, R]:
     """Decorator to cache the result of a function call based on its unique arguments"""
+
     def decorator(func: Callable[P, R]):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             # ignore the self argument of a method
             key_args = args[1:] if is_method else args
-            key_parts = [
-                '_'.join(str(arg) for arg in key_args),
-                '_'.join(f"{k}={v}" for k, v in kwargs.items())
-            ]
+            key_parts = ["_".join(str(arg) for arg in key_args), "_".join(f"{k}={v}" for k, v in kwargs.items())]
             # each function call is uniquely identified by its name and the argument it was called with
             key = func.__name__ + "__".join(kp for kp in key_parts if kp)
             return FileCache(resource_name, key)(func)(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 

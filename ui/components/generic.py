@@ -26,7 +26,6 @@ class AboveFold(Container):
 
 
 class Tab(Static):
-
     class Selected(Message):
         """Color selected message."""
 

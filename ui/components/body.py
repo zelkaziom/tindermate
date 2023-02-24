@@ -16,19 +16,18 @@ from ui.utils import render_link, render_markdown_info_list
 
 
 class UserProfile(Container):
-
     def on_user_loaded(self, user: CurrentUser) -> None:
         user_info = {
             "Gender": user.gender_str,
             "Age": user.age,
-            "Interests": ', '.join(user.interests),
+            "Interests": ", ".join(user.interests),
             "School": user.school,
             "Job": user.job,
             "Age filter": f"{user.age_filter_min}-{user.age_filter_max}",
             "Distance filter": user.distance_filter,
             "Gender filter": user.gender_filter_str,
             "Location": f"{user.pos_info.country.name} ({user.pos_info.timezone})",
-            "Discoverable": user.discoverable
+            "Discoverable": user.discoverable,
         }
         self.mount(
             SubTitle(render_link(link=user.profile_link, label=user.name.upper())),
@@ -98,16 +97,12 @@ class Body(Static):
 
     async def fetch_new_matches(self) -> None:
         await self.fetch_tab_content(
-            self.ctx.tinder.matches(messaged=False),
-            NewTinderMatch,
-            sort_key=attrgetter("created_date")
+            self.ctx.tinder.matches(messaged=False), NewTinderMatch, sort_key=attrgetter("created_date")
         )
 
     async def fetch_messaged_matches(self) -> None:
         await self.fetch_tab_content(
-            self.ctx.tinder.matches(messaged=True),
-            MessagedTinderMatch,
-            sort_key=lambda m: m.messages[-1].sent_date
+            self.ctx.tinder.matches(messaged=True), MessagedTinderMatch, sort_key=lambda m: m.messages[-1].sent_date
         )
 
     async def fetch_tab_content(self, fetch_coro: Coroutine, widget_cls: type[TinderMatch], sort_key: Callable) -> None:
@@ -115,7 +110,7 @@ class Body(Static):
             matches = list(await fetch_coro)
             current_user = await self.get_current_user()
             sorted_matches = sorted(matches, key=sort_key, reverse=True)
-            sliced_matches = sorted_matches[:self._TAB_CONTENT_MAX_ITEMS]
+            sliced_matches = sorted_matches[: self._TAB_CONTENT_MAX_ITEMS]
             widgets = []
             for idx, match in enumerate(sliced_matches):
                 widgets.append(widget_cls(self.ctx, match, current_user, batch=idx))

@@ -168,7 +168,7 @@ class MatchDetail(Match):
     person: UserDetail
 
     @classmethod
-    def parse_obj(cls, obj: dict) -> 'MatchDetail':
+    def parse_obj(cls, obj: dict) -> "MatchDetail":
         if "id" in obj["person"]:
             obj["person"]["_id"] = obj["person"]["id"]
-        return super().parse_obj(obj) # noqa
+        return super().parse_obj(obj)  # noqa
