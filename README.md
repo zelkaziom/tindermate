@@ -101,8 +101,8 @@ poetry installed on your system.
 
 ## Contributing
 
-Feel free to make a pull request and contribute to this project! If you find any bugs or have any suggestions for improvements,
-please open an issue, and I will try to address it as soon as possible. 
+Feel free to make a pull request and contribute to this project! If you find any bugs or have any suggestions for new 
+features or improvements, please open an issue, and I will try to address it as soon as possible. 
 
 ## Disclaimer
 
