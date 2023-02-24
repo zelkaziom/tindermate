@@ -10,8 +10,7 @@ based on your match's profile information, including interests, job, school, and
 
 ![App screenshot](docs/images/app_screenshot_1.png "App screenshot")
 
-It uses ChatGPT-like language model to generate suitable pickup lines or message replies based on either the matched person’s profile
-(interests, job, school, bio), or your message history with the matched person.
+The app uses ChatGPT-like language model to generate suitable pickup lines or message replies based on either the matched person’s profile, or your message history with the matched person.
 
 With TinderMate, you can effortlessly:
 - Display key details about your matches, such as their name, age, bio, and common interests
@@ -21,9 +20,9 @@ With TinderMate, you can effortlessly:
 - Display the personalized prompt generated based on your match's profile or your mutual message history
 - Use a convenient command-line GUI to manage the application
 
-TinderMate is built for both female and male users and detects your gender from your Tinder profile, ensuring that your messages are always grammatically correct and effective.
+TinderMate is built for both **female and male** users and detects your gender from your Tinder profile, ensuring that your messages are always grammatically correct and effective.
 
-Make sure to star the project if you find it useful!
+Make sure to **star the project** if you find it useful! :star:
 
 ## Built with
 
@@ -42,18 +41,17 @@ and the [Prerequisites](#prerequisites) section for more information on how to g
 
 ## Installation
 
-1. Make sure you have Python 3.10 or higher installed and available on your PATH environment variable
+1. Make sure you have Python 3.10 or higher installed and available on your `PATH` environment variable
    (You can check your version using `$ python --version`)
 2. Clone the repository using `$ git clone https://github.com/borisrakovan/tindermate.git`
 3. cd into the directory of the project (e.g. `$ cd tindermate`)
 4. *Optional:* Create a virtual environment for the project using `$ python -m venv venv`
-and activate it using (e.g. `$ venv/bin/activate` on Linux/macOS or `$ venv\Scripts\activate` on Windows)
+and activate it using `$ venv/bin/activate` on Linux/macOS or `$ venv\Scripts\activate` on Windows
 5. Install the project's dependencies using `$ python -m pip install .`
 6. Run the application in your terminal using `$ python -m main` 
 
 Note: The project is developed using poetry, so you can skip the steps 4 and 5 and use `poetry install` if you have
 poetry installed on your system.
-
 
 ## Prerequisites
 
@@ -79,20 +77,21 @@ The app will automatically notify you if your auth token is invalid and prompt y
 You also need to have an OpenAI API key in order to call the GPT3 text completion AI language model.
 You can get one by signing up for an account on the [OpenAI website](https://openai.com/) and then creating a new API key.
 Depending on your country, you might need to provide your credit card in order to create an API key, although it is possible
-that you can get some free credits from OpenAI when you sign up for an account. This process should be pretty straightforward, if you need more information on how to get an API key, you can follow for example
+that you can get some free credits from OpenAI when you sign up for an account. This whole process should be pretty straightforward.
+If you need more information on how to get an API key, you can follow for example
 [this tutorial](https://elephas.app/blog/how-to-create-openai-api-keys-cl5c4f21d281431po7k8fgyol0).
 
-I advise you to set up a usage limit in your [OpenAI profile configuration](https://platform.openai.com/account/billing/limits),
+I advise you to **set up a usage limit** in your [OpenAI profile configuration](https://platform.openai.com/account/billing/limits),
 so you have control over your spending. However, you should not worry about paying too much for the API calls, however, since the OpenAI
-pricing model is fairly generous. For instance, I only spent 1.5$ during the entire initial development of this project, 
+pricing model is fairly generous. For instance, I only spent 1$ during the entire initial development of this project, 
 making hundreds of API requests to the GPT3 model.
 
-> Always make sure to check out the [OpenAI pricing page](https://openai.com/api/pricing/) to make sure you know what you are spending on your API calls.
+> Always make sure to check out the [OpenAI pricing page](https://openai.com/api/pricing/) so that you know what you are spending on your API calls.
 
 ---
 
 Once you have both your Tinder auth token and your OpenAI API key, you can start using the application. On the first
-run, the application will prompt you to enter your Tinder auth token and your OpenAI API key. You can also enter these
+run, the application will prompt you to enter your both tokens. You can also enter these
 credentials manually by creating an empty `.env` file in the application root directory and manually adding the keys
 there. See the `.env.example` file for an example of how the `.env` file should look like.
 
@@ -103,9 +102,9 @@ please open an issue, and I will try to address it as soon as possible.
 
 ## Disclaimer
 
-TinderMate is an independent project and is not associated with Tinder or OpenAI in any way.
+TinderMate is an independent project and is **not associated with Tinder or OpenAI in any way**.
 It is a personal project that I built for fun and to learn more about the OpenAI's GPT3 model and the Textual TUI framework. 
-The application is intended for personal use only and comes with no guarantees or warranties. 
+The application is intended for **personal use only** and comes with no guarantees or warranties. 
 By using TinderMate, you agree that you are responsible for any consequences that may arise from using the application,
 and that the application owner and developer cannot be held responsible for any damages or negative outcomes.
 
