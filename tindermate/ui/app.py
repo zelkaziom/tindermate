@@ -52,19 +52,23 @@ class AppScreen(Screen):
         super().__init__()
         tokens = Tokens.load()
         self.ctx = AppContext(
-            agent=ConversationAgent(api_key=tokens.openai_token or ""),
-            tinder=create_tinder_client(auth_token=tokens.tinder_token or ""),
+            agent=ConversationAgent(api_key=tokens.openai_token),
+            tinder=create_tinder_client(auth_token=tokens.tinder_token),
         )
 
     def compose(self) -> ComposeResult:
-        yield Body(self.ctx)
+        yield Container(
+            Sidebar(classes="-hidden"),
+            Header(),
+            Body(self.ctx),
+            Footer(),
+        )
 
 
-class Tindermate(App):
+class TinderMate(App):
     BINDINGS = [
         ("ctrl+b", "toggle_sidebar", "Sidebar"),
         ("ctrl+t", "app.toggle_dark", "Toggle Dark mode"),
-        # ("f1", "app.toggle_class('TextLog', '-hidden')", "Notes"),
         ("ctrl+c,ctrl+q", "app.quit", "Quit"),
     ]
     SCREENS = {"input": AuthScreen(), "body": AppScreen(), "loading": LoadingScreen()}
@@ -72,14 +76,6 @@ class Tindermate(App):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    def compose(self) -> ComposeResult:
-        """Create child widgets for the app."""
-        yield Container(
-            Sidebar(classes="-hidden"),
-            Header(),
-            Footer(),
-        )
 
     async def on_mount(self) -> None:
         self.push_screen(LoadingScreen())
@@ -91,8 +87,6 @@ class Tindermate(App):
         except InvalidTokenError as exc:
             utils.show_notification(self, exc.args[0])
             self.push_screen(AuthScreen())
-
-    # async def on_input_changed(self, message: Input.Changed) -> None:
 
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""

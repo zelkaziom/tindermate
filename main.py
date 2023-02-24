@@ -1,8 +1,8 @@
-from tindermate.ui.app import Tindermate
+from tindermate.ui.app import TinderMate
 
 
 def main() -> None:
-    app = Tindermate()
+    app = TinderMate()
     app.run()
 
 

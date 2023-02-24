@@ -6,20 +6,15 @@ from textual.widgets import Checkbox, Static
 
 from tindermate.configuration import Configuration
 
-# TODO
 MESSAGE = """
-We hope you enjoy using Textual.
+I hope you enjoy using TinderMate.
 
-Here are some links. You can click these!
+[@click="app.open_link('https://github.com/borisrakovan/tindermate')"]TinderMate GitHub Repository[/]
 
-[@click="app.open_link('https://textual.textualize.io')"]Textual Docs[/]
+Shout out to [@click="app.open_link('https://github.com/Textualize/textual')"]Textual TUI framework[/]
+for making this UI possible.
 
-[@click="app.open_link('https://github.com/Textualize/textual')"]Textual GitHub Repository[/]
-
-[@click="app.open_link('https://github.com/Textualize/rich')"]Rich GitHub Repository[/]
-
-
-Built with ♥ by [@click="app.open_link('https://www.textualize.io')"]Textualize.io[/]
+Built with ♥ by [@click="app.open_link('https://github.com/borisrakovan')"]Boris Rakovan[/]
 
 """
 
@@ -58,6 +53,6 @@ class Version(Static):
 
 class Sidebar(Container):
     def compose(self) -> ComposeResult:
-        yield Title("Textual Demo")
+        yield Title("TinderMate")
         yield OptionGroup(Message(MESSAGE), Version())
         yield DarkSwitch()
