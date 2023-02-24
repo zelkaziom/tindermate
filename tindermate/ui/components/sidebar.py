@@ -11,7 +11,7 @@ I hope you enjoy using TinderMate.
 
 [@click="app.open_link('https://github.com/borisrakovan/tindermate')"]TinderMate GitHub Repository[/]
 
-Shout out to [@click="app.open_link('https://github.com/Textualize/textual')"]Textual TUI framework[/]
+Shout out to the awesome [@click="app.open_link('https://github.com/Textualize/textual')"]Textual TUI framework[/]
 for making this UI possible.
 
 Built with ♥ by [@click="app.open_link('https://github.com/borisrakovan')"]Boris Rakovan[/]
