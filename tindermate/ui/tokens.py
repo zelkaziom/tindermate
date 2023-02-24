@@ -1,5 +1,4 @@
 import asyncio
-import tokenize
 from dataclasses import dataclass
 
 from tindermate.configuration import Configuration
