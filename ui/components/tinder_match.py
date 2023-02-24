@@ -1,6 +1,7 @@
 import contextlib
 from contextlib import contextmanager
 from enum import Enum
+from typing import cast
 
 from rich.console import RenderableType
 from rich.markdown import Markdown
@@ -100,7 +101,6 @@ class TinderMatch(Static):
 
         return self.match_detail
 
-
     @contextmanager
     def loading_data(self) -> EmptyGenerator:
         loading = self.query_one("#loading-data")
@@ -112,7 +112,7 @@ class TinderMatch(Static):
     async def handle_generation(self) -> None:
         with self.loading_data():
             result = await self.ctx.agent.complete_text(await self.get_prompt())
-            self.result = self.render_result(result)
+            self.result = cast(reactive, self.render_result(result))
 
         utils.show_notification(
             self.app,
@@ -123,7 +123,7 @@ class TinderMatch(Static):
         with self.loading_data():
             prompt = await self.get_prompt()
             lines = ["**Prompt**".upper(), "", prompt.render().replace("\n", "\n\n")]
-            self.result = Markdown("\n".join(lines))
+            self.result = cast(reactive, Markdown("\n".join(lines)))
 
         utils.show_notification(
             self.app,
@@ -133,15 +133,15 @@ class TinderMatch(Static):
     async def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id in ["generate", "regenerate"]:
             utils.fire_task(self.app, self.handle_generation())
-            self.current_view = MatchView.RESULT
+            self.current_view = cast(reactive, MatchView.RESULT)
 
         elif event.button.id == "show-prompt":
             utils.fire_task(self.app, self.handle_show_prompt())
-            self.current_view = MatchView.PROMPT
+            self.current_view = cast(reactive, MatchView.PROMPT)
 
         elif event.button.id == "discard":
-            self.result = None
-            self.current_view = MatchView.DEFAULT
+            self.result = cast(reactive, None)
+            self.current_view = cast(reactive, MatchView.DEFAULT)
 
     def watch_current_view(self, current_view: MatchView) -> None:
         """Replace the rendered buttons with a new set"""

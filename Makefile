@@ -1,18 +1,18 @@
 
 black:
-	time black .
+	black .
 
 black-check:
-	time black . --check
+	black . --check
 
 mypy:
-	time mypy .
+	mypy .
 
 ruff:
-	time ruff . --fix
+	ruff . --fix
 
 ruff-check:
-	time ruff .
+	ruff .
 
 all-lint: black mypy ruff
 all-lint-check: black-check mypy ruff-check
