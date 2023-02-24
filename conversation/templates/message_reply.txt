@@ -1,0 +1,9 @@
+The following is a chat conversation between a {{ _1.noun }} and {{ _1.apos }} new Tinder match.
+The {{ _1.noun }} is creative, clever, and friendly. {{ _1.psubj|capitalize }} texts {{ _2.pobj }} in an original, playful and flirty way.
+
+{% if num_hidden_messages > 0 %}
+... ({{ num_hidden_messages }} hidden){% endif %}
+{% for msg in message_history %}
+{% if msg[0] %}{{ _1.message_mark }}{% else %}{{ _2.message_mark }}{% endif %}{{ msg[1] }}
+{% endfor %}
+{{ _1.message_mark }}

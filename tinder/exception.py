@@ -1,0 +1,4 @@
+
+
+class TinderAuthError(Exception):
+    pass

@@ -1,0 +1,254 @@
+
+ *  {
+    transition: background 500ms in_out_cubic, color 500ms in_out_cubic;
+}
+
+Screen {
+    layers: base overlay notes notifications;
+    overflow: hidden;
+}
+
+Notification {
+    dock: bottom;
+    layer: notification;
+    width: auto;
+    margin: 2 4;
+    padding: 1 2;
+    background: $background;
+    color: $text;
+    height: auto;
+}
+
+/* SIDEBAR */
+
+Sidebar {
+    width: 40;
+    background: $panel;
+    transition: offset 500ms in_out_cubic;
+    layer: overlay;
+
+}
+
+Sidebar:focus-within {
+    offset: 0 0 !important;
+}
+
+Sidebar.-hidden {
+    offset-x: -100%;
+}
+
+Title {
+    padding: 2 4;
+    border-right: vkey $background;
+    dock: top;
+    text-align: center;
+    text-style: bold;
+}
+
+Sidebar Title {
+    background: $boost;
+    color: $secondary;
+}
+
+OptionGroup {
+    background: $boost;
+    color: $text;
+    height: 1fr;
+    border-right: vkey $background;
+}
+
+Option {
+    margin: 1 0 0 1;
+    height: 3;
+    padding: 1 2;
+    background: $boost;
+    border: tall $panel;
+    text-align: center;
+}
+
+Option:hover {
+    background: $primary 20%;
+    color: $text;
+}
+
+Message {
+    margin: 0 1;
+}
+
+DarkSwitch {
+    background: $panel;
+    padding: 1;
+    dock: bottom;
+    height: auto;
+    border-right: vkey $background;
+}
+
+DarkSwitch .label {
+    width: 1fr;
+    padding: 1 2;
+    color: $text-muted;
+}
+
+DarkSwitch Checkbox {
+    background: $boost;
+    dock: left;
+}
+
+
+Version {
+    color: $text-disabled;
+    dock: bottom;
+    text-align: center;
+    padding: 1;
+}
+
+/* BODY */
+
+TinderMatch {
+    background: $boost;
+    margin: 1 0;
+    padding: 1 4;
+}
+
+#results {
+    background: $boost-lighten-3;
+    padding: 1 2;
+    margin-top: 1;
+    display: none;
+}
+.expanded #results {
+    display: block;
+}
+
+Row {
+    layout: horizontal;
+    width:  100%;
+    height: auto;
+    border-bottom: heavy $panel-lighten-1;
+}
+
+Row > * {
+    width: 1fr;
+}
+Row .right {
+    width: 50%;
+    content-align: right middle;
+    padding-top: 1;
+    color: $text;
+}
+
+ErrorMessage {
+    color: red;
+    text-style: bold;
+}
+
+SubTitle {
+    padding-top: 1;
+    color: $text;
+    text-style: bold;
+}
+
+Column {
+    height: auto;
+    min-height: 100vh;
+    align: center top;
+}
+
+Section {
+    height: auto;
+    min-width: 40;
+    /*margin: 1 2 4 2;*/
+}
+
+Tab {
+    padding: 1 2;
+    background: $boost;
+    text-align: center;
+    text-style: bold;
+    border: tall $boost;
+}
+
+Tab.active {
+    border: tall $primary;
+}
+
+Button {
+    width: 16;
+}
+
+Container.tab {
+    height: 30;
+    background: $boost;
+    text-align: center;
+    text-style: bold;
+}
+
+.pad {
+    margin-bottom: 1;
+}
+
+TinderMatch Button {
+    margin-right: 2;
+}
+
+Body {
+    height: 100%;
+    overflow-y: scroll;
+    width: 100%;
+    background: $surface;
+    padding: 1 0 0 0;
+}
+
+UserProfile {
+    dock: left;
+    background: $boost;
+    width: 40;
+    height: 100%;
+    margin-right: 2;
+    padding: 0 2;
+}
+
+.text-row {
+    text-align: center;
+    margin: 2 0;
+    /*display: block;*/
+}
+
+.hidden {
+    display: none;
+}
+
+/** {border: solid green;}*/
+
+ #auth-form {
+    height: auto;
+    margin: 1 4;
+    padding: 1 2;
+    layout: grid;
+    grid-size: 2;
+    grid-rows: 4;
+    grid-columns: 16 1fr;
+    background: $boost;
+    border: wide $background;
+}
+
+#auth-form Button {
+    margin: 0 1;
+    width: 100%;
+}
+
+#auth-form .label {
+    padding: 1 2;
+    text-align: right;
+}
+
+AboveFold {
+    width: 100%;
+    height: 100%;
+    align: center middle;
+    color: $text;
+}
+
+AboveFold Static {
+    text-align: center;
+}
