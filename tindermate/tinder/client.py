@@ -10,7 +10,7 @@ from tindermate.configuration import Configuration
 from tindermate.tinder.exception import TinderAuthError
 from tindermate.tinder.schemas import CurrentUser, LikedUserResult, Match, MatchDetail, Message, UserDetail
 from tindermate.type_aliases import AnyDict
-from tindermate.utils import FileCacheDecorator, arg_key_file_cache
+from tindermate.filecache import FileCacheDecorator, file_cache
 
 
 class TinderClient:
@@ -93,7 +93,7 @@ class TinderClient:
         return CurrentUser.parse_obj(resp)
 
 
-_tinder_cache: FileCacheDecorator = arg_key_file_cache("tinder", is_method=True)
+_tinder_cache: FileCacheDecorator = file_cache("tinder", is_method=True)
 
 
 class CachingTinderClient(TinderClient):

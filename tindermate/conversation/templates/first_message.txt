@@ -1,8 +1,8 @@
 The following is a chat conversation between a {{ _1.noun }} and {{ _1.apos }} new Tinder match.
 The {{ _1.noun }} is creative, clever, and friendly. {{ _1.psubj|capitalize }} texts {{ _2.pobj }} in an original, playful and flirty way.
 
-{{ _2.psubj|capitalize }} is {{ age }} years old{% if city %}, lives in {{ city }},{% endif %} and {{ _2.apos }} interests are:
-{% for interest in interests %}{{ interest[0] }}{% if interest[1] %} (common){% endif %}{{ ", " if not loop.last else "" }}{% endfor %}
+{{ _2.psubj|capitalize }} is {{ age }} years old{% if city %}, lives in {{ city }},{% endif %}{% if interests %} and {{ _2.apos }} interests are:
+ {% for interest in interests %}{{ interest[0] }}{% if interest[1] %} (common){% endif %}{{ ", " if not loop.last else "" }}{% endfor %}{% endif %}.
 {% if job %}{{ _2.apos|capitalize }} job is {{ job }}.{% endif %}
 {% if school %} {{ _2.apos|capitalize }} school is {{ school }}.{% endif %}
 {% if bio %}This is what {{ _2.psubj }} has in {{ _2.apos }} Tinder bio: {{ bio }}{% endif %}

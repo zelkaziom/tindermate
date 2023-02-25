@@ -128,6 +128,17 @@ optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
 [[package]]
+name = "exceptiongroup"
+version = "1.1.0"
+description = "Backport of PEP 654 (exception groups)"
+category = "main"
+optional = true
+python-versions = ">=3.7"
+
+[package.extras]
+test = ["pytest (>=6)"]
+
+[[package]]
 name = "frozenlist"
 version = "1.3.3"
 description = "A list-like structure which implements collections.abc.MutableSequence"
@@ -204,6 +215,14 @@ zipp = ">=0.5"
 docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "jaraco.tidelift (>=1.4)"]
 perf = ["ipython"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "importlib-resources (>=1.3)"]
+
+[[package]]
+name = "iniconfig"
+version = "2.0.0"
+description = "brain-dead simple config-ini parsing"
+category = "main"
+optional = true
+python-versions = ">=3.7"
 
 [[package]]
 name = "jinja2"
@@ -355,6 +374,18 @@ docs = ["furo (>=2022.12.7)", "proselint (>=0.13)", "sphinx-autodoc-typehints (>
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.2.2)", "pytest-cov (>=4)", "pytest-mock (>=3.10)", "pytest (>=7.2.1)"]
 
 [[package]]
+name = "pluggy"
+version = "1.0.0"
+description = "plugin and hook calling mechanisms for python"
+category = "main"
+optional = true
+python-versions = ">=3.6"
+
+[package.extras]
+dev = ["pre-commit", "tox"]
+testing = ["pytest", "pytest-benchmark"]
+
+[[package]]
 name = "pydantic"
 version = "1.10.5"
 description = "Data validation and settings management using python type hints"
@@ -379,6 +410,41 @@ python-versions = ">=3.6"
 
 [package.extras]
 plugins = ["importlib-metadata"]
+
+[[package]]
+name = "pytest"
+version = "7.2.1"
+description = "pytest: simple powerful testing with Python"
+category = "main"
+optional = true
+python-versions = ">=3.7"
+
+[package.dependencies]
+attrs = ">=19.2.0"
+colorama = {version = "*", markers = "sys_platform == \"win32\""}
+exceptiongroup = {version = ">=1.0.0rc8", markers = "python_version < \"3.11\""}
+iniconfig = "*"
+packaging = "*"
+pluggy = ">=0.12,<2.0"
+tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
+
+[package.extras]
+testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
+
+[[package]]
+name = "pytest-asyncio"
+version = "0.20.3"
+description = "Pytest support for asyncio"
+category = "main"
+optional = true
+python-versions = ">=3.7"
+
+[package.dependencies]
+pytest = ">=6.1.0"
+
+[package.extras]
+docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
+testing = ["coverage (>=6.2)", "hypothesis (>=5.7.1)", "flaky (>=3.5.0)", "mypy (>=0.931)", "pytest-trio (>=0.7.0)"]
 
 [[package]]
 name = "python-dotenv"
@@ -544,7 +610,7 @@ multidict = ">=4.0"
 
 [[package]]
 name = "zipp"
-version = "3.14.0"
+version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
@@ -552,36 +618,35 @@ python-versions = ">=3.7"
 
 [package.extras]
 docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "func-timeout", "jaraco.functools", "more-itertools", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pytest-flake8"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "jaraco.functools", "more-itertools", "big-o", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pytest-flake8"]
+
+[extras]
+test = ["pytest", "pytest-asyncio"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "917f861741fb80c7be067eb7689cd089284fa715cd5eb5d0b57a59dc9136a70f"
+content-hash = "7a8af693de5b8795420b5db757a1b8ce84af683803b6a68eed404ff307ab334f"
 
 [metadata.files]
 aiohttp = []
 aiosignal = []
 anyio = []
-async-timeout = [
-    {file = "async-timeout-4.0.2.tar.gz", hash = "sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15"},
-    {file = "async_timeout-4.0.2-py3-none-any.whl", hash = "sha256:8ca1e4fcf50d07413d66d1a5e416e42cfdf5851c981d679a09851a6853383b3c"},
-]
+async-timeout = []
 attrs = []
 black = []
 certifi = []
 charset-normalizer = []
-click = [
-    {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
-    {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
-]
+click = []
 colorama = []
+exceptiongroup = []
 frozenlist = []
 h11 = []
 httpcore = []
 httpx = []
 idna = []
 importlib-metadata = []
+iniconfig = []
 jinja2 = []
 markdown-it-py = []
 markupsafe = []
@@ -595,8 +660,11 @@ openai = []
 packaging = []
 pathspec = []
 platformdirs = []
+pluggy = []
 pydantic = []
 pygments = []
+pytest = []
+pytest-asyncio = []
 python-dotenv = []
 requests = []
 rfc3986 = []
@@ -605,10 +673,7 @@ ruff = []
 sniffio = []
 tenacity = []
 textual = []
-tomli = [
-    {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
-    {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
-]
+tomli = []
 tqdm = []
 typing-extensions = []
 urllib3 = []

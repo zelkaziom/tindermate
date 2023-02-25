@@ -3,7 +3,7 @@ from openai.error import AuthenticationError
 
 from tindermate.configuration import Configuration
 from tindermate.type_aliases import AnyDict
-from tindermate.utils import arg_key_file_cache
+from tindermate.filecache import file_cache
 
 
 class OpenAIAuthError(Exception):
@@ -73,7 +73,7 @@ class CachingGPTClient(GPTClient):
         self._num_requests = 0
         self._delegate = delegate
 
-    @arg_key_file_cache("gpt", is_method=True)
+    @file_cache("gpt", is_method=True)
     async def complete_text(
         self,
         prompt: str,
