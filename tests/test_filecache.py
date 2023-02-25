@@ -92,8 +92,6 @@ def cache_test_cls(cache_dir):
     return CacheTestClass
 
 
-# TODO
-
 def test_file_cache_instance_method(cache_test_cls, cache_dir):
     obj = cache_test_cls()
     result1 = obj.instance_method(2, 3)

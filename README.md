@@ -4,7 +4,7 @@ A GPT-Powered Message Generator for Your Tinder Matches
 
 ## About the project
 
-TinderMate is a Python project that harnesses the power OpenAI's [GPT3 language model](https://en.wikipedia.org/wiki/GPT-3)
+TinderMate is a Python project that harnesses the power OpenAI's [GPT-3 language model](https://en.wikipedia.org/wiki/GPT-3)
 and the Tinder API and to streamline the interactions with your matches on the popular dating app. It generates highly suitable pickup lines or message replies
 based on your match's profile information, including interests, job, school, and bio, or your message history with the matched person.
 
@@ -21,6 +21,8 @@ With TinderMate, you can effortlessly:
 - Use a convenient command-line GUI to manage the application
 
 TinderMate is built for both **female and male** users and detects your gender from your Tinder profile, ensuring that your messages are always grammatically correct and effective.
+Is also supports **multiple languages** and should automatically infer the most appropriate language for generated messages from language from your match's profile and bio.
+However, please note that the GPT-3 model works best with English, and the generated messages might not be as good in other languages.
 
 Make sure to **star the project** if you find it useful! :star:
 
@@ -60,7 +62,7 @@ The app will automatically notify you if your auth token is invalid and prompt y
 
 ### OpenAI API key
 
-You also need to have an OpenAI API key in order to call the GPT3 text completion AI language model.
+You also need to have an OpenAI API key in order to call the GPT-3 text completion AI language model.
 You can get one by signing up for an account on the [OpenAI website](https://openai.com/) and then creating a new API key.
 Depending on your country, you might need to provide your credit card in order to create an API key, although it is possible
 that you can get some free credits from OpenAI when you sign up for an account. This whole process should be pretty straightforward.
@@ -70,7 +72,7 @@ If you need more information on how to get an API key, you can follow for exampl
 I advise you to **set up a usage limit** in your [OpenAI profile configuration](https://platform.openai.com/account/billing/limits),
 so you have control over your spending. However, you should not worry about paying too much for the API calls, however, since the OpenAI
 pricing model is fairly generous. For instance, I only spent 1$ during the entire initial development of this project, 
-making hundreds of API requests to the GPT3 model.
+making hundreds of API requests to the GPT-3 model.
 
 > Always make sure to check out the [OpenAI pricing page](https://openai.com/api/pricing/) so that you know what you are spending on your API calls.
 
@@ -107,7 +109,7 @@ features or improvements, please open an issue, and I will try to address it as 
 ## Disclaimer
 
 TinderMate is an independent project and is **not associated with Tinder or OpenAI in any way**.
-It is a personal project that I built for fun and to learn more about the OpenAI's GPT3 model and the Textual TUI framework. 
+It is a personal project that I built for fun and to learn more about the OpenAI's GPT-3 model and the Textual TUI framework. 
 The application is intended for **personal use only** and comes with no guarantees or warranties. 
 By using TinderMate, you agree that you are responsible for any consequences that may arise from using the application,
 and that the application owner and developer cannot be held responsible for any damages or negative outcomes.
