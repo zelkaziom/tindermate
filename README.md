@@ -21,7 +21,7 @@ With TinderMate, you can effortlessly:
 - Use a convenient command-line GUI to manage the application
 
 TinderMate is built for both **female and male** users and detects your gender from your Tinder profile, ensuring that your messages are always grammatically correct and effective.
-It also supports **multiple languages** and should automatically infer the most appropriate language for generation based on the language from your match's profile or the existing messages.
+It also supports **multiple languages** and should automatically infer the most appropriate language for generation, based on the language used in your match's profile or the existing messages
 However, please note that the GPT-3 model works best with English, and the generated messages might not be as good in other languages.
 
 Make sure to **star the project** if you find it useful! :star:
