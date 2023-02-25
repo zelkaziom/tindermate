@@ -10,7 +10,7 @@ based on your match's profile information, including interests, job, school, and
 
 ![App screenshot](docs/images/app_screenshot_1.png "App screenshot")
 
-The app uses ChatGPT-like language model to generate suitable pickup lines or message replies based on either the matched person’s profile, or your message history with the matched person.
+The app uses the GPT-3 AI language model to generate suitable pickup lines or message replies based on either the matched person’s profile, or your message history with the matched person.
 
 With TinderMate, you can effortlessly:
 - Display key details about your matches, such as their name, age, bio, and common interests
