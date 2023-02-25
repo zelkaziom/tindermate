@@ -31,6 +31,7 @@ Make sure to **star the project** if you find it useful! :star:
 - [Python 3.10](https://www.python.org/)
 - [OpenAI GPT3](https://openai.com/blog/openai-api/)
 - [Textual](https://github.com/textualize/textual/)
+- [Jinja2](https://jinja.palletsprojects.com/en/3.0.x/)
 
 ## Requirements
 
@@ -120,6 +121,12 @@ essential for building genuine connections with other people. It is also importa
 are just suggestions, and you are free to modify them to suit your style and personality. Additionally, do not use TinderMate 
 to generate inappropriate or offensive messages, as this can result in your account being banned by Tinder. 
 By using TinderMate, you acknowledge and agree to the above disclaimer and warnings.
+
+> **Note:** TinderMate is not a Tinder bot, and it does not automate any of the Tinder app's functionality. It can merely
+> give you a power to find better words to start or continue a conversation with your Tinder matches. 
+> It is not intended to be used for any other purpose than that.
+> Additionally, all the communication between the Tinder API and you PC happens in real-time and the app does not store
+> any personal data from Tinder on your computer.
 
 ---
 
