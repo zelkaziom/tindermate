@@ -21,10 +21,16 @@ With TinderMate, you can effortlessly:
 - Use a convenient command-line GUI to manage the application
 
 TinderMate is built for both **female and male** users and detects your gender from your Tinder profile, ensuring that your messages are always grammatically correct and effective.
-Is also supports **multiple languages** and should automatically infer the most appropriate language for generated messages from language from your match's profile and bio.
+Is also supports **multiple languages** and should automatically infer the most appropriate language for generation based on the language from your match's profile or the existing messages.
 However, please note that the GPT-3 model works best with English, and the generated messages might not be as good in other languages.
 
 Make sure to **star the project** if you find it useful! :star:
+
+> **Note:** TinderMate is not a Tinder bot, and it does not automate any of the Tinder app's functionality. It can merely
+> give you a power to find better words to start or continue a conversation with your Tinder matches. It is not intended to be used for any other purpose than that.
+> You can think of it as a Grammarly extension in your browser or a ChatGPT conversational AI chatbot integrated in your terminal.
+> Additionally, all the communication between the Tinder API and you PC happens in real-time and the app does not store
+> any personal data from Tinder on your computer.
 
 ## Built with
 
@@ -121,12 +127,6 @@ essential for building genuine connections with other people. It is also importa
 are just suggestions, and you are free to modify them to suit your style and personality. Additionally, do not use TinderMate 
 to generate inappropriate or offensive messages, as this can result in your account being banned by Tinder. 
 By using TinderMate, you acknowledge and agree to the above disclaimer and warnings.
-
-> **Note:** TinderMate is not a Tinder bot, and it does not automate any of the Tinder app's functionality. It can merely
-> give you a power to find better words to start or continue a conversation with your Tinder matches. It is not intended to be used for any other purpose than that.
-> You can think of it as a Grammarly extension in your browser or a ChatGPT conversational AI chatbot integrated in your terminal.
-> Additionally, all the communication between the Tinder API and you PC happens in real-time and the app does not store
-> any personal data from Tinder on your computer.
 
 ---
 
