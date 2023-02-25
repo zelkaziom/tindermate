@@ -8,7 +8,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Generic, ParamSpec, TypeVar
 
-from configuration import Configuration
+from tindermate.configuration import Configuration
 
 
 P = ParamSpec("P")
