@@ -123,8 +123,8 @@ to generate inappropriate or offensive messages, as this can result in your acco
 By using TinderMate, you acknowledge and agree to the above disclaimer and warnings.
 
 > **Note:** TinderMate is not a Tinder bot, and it does not automate any of the Tinder app's functionality. It can merely
-> give you a power to find better words to start or continue a conversation with your Tinder matches. 
-> It is not intended to be used for any other purpose than that.
+> give you a power to find better words to start or continue a conversation with your Tinder matches. It is not intended to be used for any other purpose than that.
+> You can think of it as a Grammarly extension in your browser or a ChatGPT conversational AI chatbot integrated in your command line.
 > Additionally, all the communication between the Tinder API and you PC happens in real-time and the app does not store
 > any personal data from Tinder on your computer.
 
