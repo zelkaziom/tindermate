@@ -26,8 +26,8 @@ However, please note that the GPT-3 model works best with English, and the gener
 
 Make sure to **star the project** if you find it useful! :star:
 
-> **Note:** TinderMate is not a Tinder bot, and it does not automate any of the Tinder app's functionality. It can merely
-> give you a power to find better words to start or continue a conversation with your Tinder matches. It is not intended to be used for any other purpose than that.
+> **Note:** TinderMate **is not a Tinder bot**, and it does not automate any of the Tinder app's functionality. It can merely
+> give you a power to find better words to start or continue a conversation with your Tinder matches. It is **not intended to be used** for any other purpose than that.
 > You can think of it as a Grammarly extension in your browser or a ChatGPT conversational AI chatbot integrated in your terminal.
 > Additionally, all the communication between the Tinder API and you PC happens in real-time and the app does not store
 > any personal data from Tinder on your computer.
